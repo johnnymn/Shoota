@@ -33,8 +33,7 @@ class Scene: SKScene {
     addChild(remainingLabel)
     targetCount = 0
 
-    timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) {
-      timer in
+    timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { _ in
       self.createTarget()
     }
   }
@@ -58,9 +57,13 @@ class Scene: SKScene {
     }
 
     // Create random x rotation.
-    let xRotation = simd_float4x4(SCNMatrix4MakeRotation(Float.pi * 2 * Float.random(in: 0...1), 1, 0, 0))
+    let xRotation = simd_float4x4(
+            SCNMatrix4MakeRotation(
+                    Float.pi * 2 * Float.random(in: 0...1), 1, 0, 0))
     // Create random y rotation.
-    let yRotation = simd_float4x4(SCNMatrix4MakeRotation(Float.pi * 2 * Float.random(in: 0...1), 0, 1, 0))
+    let yRotation = simd_float4x4(
+            SCNMatrix4MakeRotation(
+                    Float.pi * 2 * Float.random(in: 0...1), 0, 1, 0))
     // Combine them.
     let rotation = simd_mul(xRotation, yRotation)
     // Move forward 1.5m into the screen.
