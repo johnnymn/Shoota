@@ -13,6 +13,9 @@ class Scene: SKScene {
   // How many targets have been created.
   var targetsCreated = 0
 
+  // The time the game started at.
+  let startTime = Date()
+
   // How many targets are currently visible.
   var targetCount = 0 {
     // Update the remainingLabel automatically
@@ -75,5 +78,27 @@ class Scene: SKScene {
     // Create an anchor at the calculated position.
     let anchor = ARAnchor(transform: transform)
     sceneView.session.add(anchor: anchor)
+  }
+
+  // Handle the player touches on the screen.
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    guard let touch = touches.first else {
+      return
+    }
+
+    // Check if the player hit any targets.
+    let location = touch.location(in: self)
+    let hit = nodes(at: location)
+
+    // Scale out and fade out the first
+    // target in the array of hits.
+    if let sprite = hit.first {
+      let scaleOut = SKAction.scale(to: 2, duration: 0.2)
+      let fadeOut = SKAction.fadeOut(withDuration: 0.2)
+      let group = SKAction.group([scaleOut, fadeOut])
+      let sequence = SKAction.sequence([group, SKAction.removeFromParent()])
+      sprite.run(sequence)
+      targetCount -= 1
+    }
   }
 }
