@@ -103,7 +103,32 @@ class Scene: SKScene {
         let sequence = SKAction.sequence([group, SKAction.removeFromParent()])
         sprite.run(sequence)
         targetCount -= 1
+
+        // Handle the end of the game.
+        if targetsCreated >= 20 && targetCount == 0 {
+          gameOver()
+        }
       }
     }
+  }
+
+  /// Handles the end of the game actions.
+  func gameOver() {
+    // Remove the label for the remaining targets.
+    remainingLabel.removeFromParent()
+
+    // Display the game over image.
+    let gameOver = SKSpriteNode(imageNamed: "gameOver")
+    addChild(gameOver)
+
+    // Calculate the time it took the player to
+    // finish the game and display it on a label.
+    let timeTaken = Date().timeIntervalSince(startTime)
+    let timeLabel = SKLabelNode(text: "Time taken: \(Int(timeTaken)) seconds")
+    timeLabel.fontSize = 36
+    timeLabel.fontName = "AmericanTypewriter"
+    timeLabel.color = .white
+    timeLabel.position = CGPoint(x: frame.midX, y: frame.midY - 120)
+    addChild(timeLabel)
   }
 }
