@@ -93,12 +93,17 @@ class Scene: SKScene {
     // Scale out and fade out the first
     // target in the array of hits.
     if let sprite = hit.first {
-      let scaleOut = SKAction.scale(to: 2, duration: 0.2)
-      let fadeOut = SKAction.fadeOut(withDuration: 0.2)
-      let group = SKAction.group([scaleOut, fadeOut])
-      let sequence = SKAction.sequence([group, SKAction.removeFromParent()])
-      sprite.run(sequence)
-      targetCount -= 1
+      // We want to remove only targets so we check the
+      // type of the sprite to avoid running this code
+      // on labels, etc.
+      if sprite is SKSpriteNode {
+        let scaleOut = SKAction.scale(to: 2, duration: 0.2)
+        let fadeOut = SKAction.fadeOut(withDuration: 0.2)
+        let group = SKAction.group([scaleOut, fadeOut])
+        let sequence = SKAction.sequence([group, SKAction.removeFromParent()])
+        sprite.run(sequence)
+        targetCount -= 1
+      }
     }
   }
 }
